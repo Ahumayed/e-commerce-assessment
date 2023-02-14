@@ -5,11 +5,11 @@ import { Category } from "./category/entities/category.entity";
 import { Product } from "./product/entities/product.entity";
 import { ProductSeeder } from "./product/product.seeder";
 
-seeder({
-  imports: [
-    TypeOrmModule.forFeature([Category, Product]),
+// seeder({
+//   imports: [
+//     TypeOrmModule.forFeature([Category, Product]),
 
-  ],
-}).run([ProductSeeder]);
+//   ],
+// }).run([ProductSeeder]);
 
-export class SeederModule {};
+// export class SeederModule {};
