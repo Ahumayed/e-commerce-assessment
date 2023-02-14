@@ -1,10 +1,22 @@
-import { Product } from "src/product/entities/product.entity";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Factory } from "nestjs-seeder";
 
-export class Category {
+@Entity()
+export class Category extends BaseEntity {
+    @PrimaryGeneratedColumn()
     id: number;
+
+    @Factory(faker => faker?.word.noun())
+    @Column()
     name: string;
+
+    @Factory(faker => faker?.lorem.paragraph())
+    @Column({default:''})
     description: string;
-    image: string;
-    // TODO: Add a relationship between Category and Product once orm is configured
-    products: Product[];
+
+    @CreateDateColumn()
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
 }

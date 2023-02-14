@@ -1,25 +1,46 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Category } from 'src/category/entities/category.entity';
+import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 
 @Injectable()
 export class ProductService {
+  constructor(
+    @InjectRepository(Product)
+    private productRepository: Repository<Product>,
+    @InjectRepository(Category)
+    private categoryRepository: Repository<Category>,
+  ) {}
+  
   create(product: Product) {
-    return 'This action adds a new product';
+    this.productRepository.save(product);
   }
 
   findAll() {
-    return `This action returns all product`;
+    return this.productRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} product`;
+    return this.productRepository.findOneBy({id});
   }
 
   update(id: number, product: Product) {
-    return `This action updates a #${id} product`;
+    return this.productRepository.update(id, product);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} product`;
+    return this.productRepository.delete(id);
+  }
+
+  // TODO: clean up this code later
+  async addCategory(id: number, categoryId: number) {
+    const product = await this.productRepository.findOneBy({id});
+    const category = await this.categoryRepository.findOneBy({id: categoryId});
+    const categories = product!.categories ?? [];
+    categories.push(category!);
+    product!.categories = categories;
+    this.productRepository.save(product!);
+    return product;
   }
 }

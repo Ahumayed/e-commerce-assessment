@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Category } from 'src/category/entities/category.entity';
 import { Product } from './entities/product.entity';
 import { ProductService } from './product.service';
 
@@ -30,5 +31,10 @@ export class ProductController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.productService.remove(+id);
+  }
+
+  @Post('/add-category/:id')
+  addCategory(@Param('id') id: string, @Query('categoryId') categoryId: string) {
+    return this.productService.addCategory(+id, +categoryId);
   }
 }
