@@ -4,7 +4,7 @@ export class products1676387733294 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         
-        queryRunner.createTable(new Table({
+        await queryRunner.createTable(new Table({
             name: "categories",
             columns: [
                 {
@@ -25,17 +25,17 @@ export class products1676387733294 implements MigrationInterface {
                 },
                 {
                     name: "created_at",
-                    type: "timestamp",
+                    type: "DATETIME",
                     default: "CURRENT_TIMESTAMP"
                 },
                 {
                     name: "updated_at",
-                    type: "timestamp",
+                    type: "DATETIME",
                     default: "CURRENT_TIMESTAMP"
                 }]
         }));
         
-        queryRunner.createTable(new Table({
+        await queryRunner.createTable(new Table({
             name: "products",
             columns: [
                 {
@@ -71,17 +71,17 @@ export class products1676387733294 implements MigrationInterface {
                 },
                 {
                     name: "created_at",
-                    type: "timestamp",
+                    type: "DATETIME",
                     default: "CURRENT_TIMESTAMP"
                 },
                 {
                     name: "updated_at",
-                    type: "timestamp",
+                    type: "DATETIME",
                     default: "CURRENT_TIMESTAMP"
                 }]
         }));
 
-        queryRunner.createTable(new Table({
+        await queryRunner.createTable(new Table({
             name: "products_categories",
             columns: [
                 {
@@ -94,14 +94,16 @@ export class products1676387733294 implements MigrationInterface {
                 }
             ]
         }));
-        queryRunner.createPrimaryKey("products_categories", ["product_id", "category_id"]);
-        queryRunner.createForeignKey("products_categories", new TableForeignKey({
+        await queryRunner.createPrimaryKey("products_categories", ["product_id", "category_id"]);
+
+        await queryRunner.createForeignKey("products_categories", new TableForeignKey({
             columnNames: ["product_id"],
             referencedColumnNames: ["id"],
             referencedTableName: "products",
             onDelete: "CASCADE"
         }));
-        queryRunner.createForeignKey("products_categories", new TableForeignKey({
+        
+        await queryRunner.createForeignKey("products_categories", new TableForeignKey({
             columnNames: ["category_id"],
             referencedColumnNames: ["id"],
             referencedTableName: "categories",
@@ -110,9 +112,9 @@ export class products1676387733294 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        queryRunner.dropTable("products_categories");
-        queryRunner.dropTable("products");
-        queryRunner.dropTable("categories");
+        await queryRunner.dropTable("products_categories");
+        await queryRunner.dropTable("products");
+        await queryRunner.dropTable("categories");
     }
 
 }

@@ -18,8 +18,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "seed": "node dist/seeder",
-    "seed:refresh": "node dist/seeder --refresh"
+    "typeorm:cli": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -d src/config/typeorm.config.ts",
+    "migration:generate": "npm run typeorm:cli -- migration:generate -d migrations -n",
+    "migration:create": "npm run typeorm:cli -- migration:create -d migrations -n",
+    "migration:run": "npm run typeorm:cli -- migration:run",
+    "migration:revert": "npm run typeorm:cli -- migration:revert"
   },
   "dependencies": {
     "@darraghor/eslint-plugin-nestjs-typed": "^3.18.0",
