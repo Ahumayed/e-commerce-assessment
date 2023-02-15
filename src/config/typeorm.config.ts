@@ -27,6 +27,6 @@ export const typeOrmConfig: DataSource = new DataSource({
   username: 'root',
   password: 'root',
   database: 'test',
-  migrations: [__dirname + '/../../migrations/*{.ts,.js}'],
+  migrations: [__dirname + '/../db/migrations/*{.ts,.js}'],
   synchronize: false,
 });

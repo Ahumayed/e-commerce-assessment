@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe, DefaultValuePipe, UseInterceptors, CacheInterceptor } from '@nestjs/common';
+import { Pagination } from 'nestjs-typeorm-paginate';
 import { Category } from 'src/category/entities/category.entity';
 import { Product } from './entities/product.entity';
 import { ProductService } from './product.service';
 
 // TODO: All validations and error handling to be done later
 @Controller('products')
+@UseInterceptors(CacheInterceptor)
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
@@ -14,8 +16,15 @@ export class ProductController {
   }
 
   @Get()
-  findAll() {
-    return this.productService.findAll();
+  async findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+  ): Promise<Pagination<Product>> {
+    limit = limit > 100 ? 100 : limit;
+    return this.productService.findAll({
+      page,
+      limit,
+    });
   }
 
   @Get(':id')

@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, CacheInterceptor } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from './entities/category.entity';
 
 // TODO: All validations and error handling to be done later
 @Controller('categories')
+@UseInterceptors(CacheInterceptor)
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 

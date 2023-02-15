@@ -23,7 +23,7 @@ export class Product {
     image: string;
     
     @ManyToMany(() => Category)
-    @JoinTable({name: "products_categories"})
+    @JoinTable({name: "products_categories", joinColumn: {name: "product_id"}, inverseJoinColumn: {name: "category_id"}})
     categories: Category[];
 
     @CreateDateColumn({name: "created_at"})

@@ -3,6 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/category/entities/category.entity';
 import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
+import {
+  IPaginationOptions,
+  paginate,
+} from 'nestjs-typeorm-paginate';
+import { MockRepository } from './product.mock.repository';
 
 @Injectable()
 export class ProductService {
@@ -17,8 +22,8 @@ export class ProductService {
     this.productRepository.save(product);
   }
 
-  findAll() {
-    return this.productRepository.find();
+  findAll(options :IPaginationOptions) {
+    return paginate<Product>(this.productRepository, options);
   }
 
   findOne(id: number) {
