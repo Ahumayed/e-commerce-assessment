@@ -1,5 +1,6 @@
 import { define } from "typeorm-seeding";
-import { faker } from '@faker-js/faker';
+const { faker } = require('@faker-js/faker');
+
 import { Product } from "src/product/entities/product.entity";
 
 define(Product, () => {

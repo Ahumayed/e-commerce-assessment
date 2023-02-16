@@ -1,4 +1,3 @@
-import { Factory } from "nestjs-seeder";
 import { Category } from "src/category/entities/category.entity";
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -11,16 +10,16 @@ export class Product {
     name: string;
 
     @Column()
-    description: string;
+    description: string = '';
     
     @Column()
     price: number;
 
     @Column()
-    stock: number;
+    stock: number = 0;
 
     @Column()
-    image: string;
+    image: string = '';
     
     @ManyToMany(() => Category)
     @JoinTable({name: "products_categories", joinColumn: {name: "product_id"}, inverseJoinColumn: {name: "category_id"}})

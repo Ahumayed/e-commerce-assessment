@@ -10,7 +10,7 @@ export default class InitialDatabaseSeed implements Seeder {
     const categories = await factory(Category)().createMany(15);
 
     await factory(Product)()
-      .map(async (product) => {
+      .map(async (product: Product) => {
         product.categories = [categories[Math.floor(Math.random() * categories.length)]];
         return product;
       })

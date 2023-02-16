@@ -18,7 +18,7 @@ export class ProductService {
     private categoryRepository: Repository<Category>,
   ) {}
   
-  create(product: Product) {
+  async create(product: Product) {
     this.productRepository.save(product);
   }
 
@@ -26,11 +26,11 @@ export class ProductService {
     return paginate<Product>(this.productRepository, options);
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return this.productRepository.findOneBy({id});
   }
 
-  update(id: number, product: Product) {
+  async update(id: number, product: Product) {
     return this.productRepository.update(id, product);
   }
 

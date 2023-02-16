@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe, DefaultValuePipe, UseInterceptors, CacheInterceptor } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe, DefaultValuePipe, UseInterceptors, CacheInterceptor, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { Category } from 'src/category/entities/category.entity';
+import { CreateProductDto } from './dtos/createProduct.dto';
 import { Product } from './entities/product.entity';
 import { ProductService } from './product.service';
 
@@ -8,11 +8,25 @@ import { ProductService } from './product.service';
 @Controller('products')
 @UseInterceptors(CacheInterceptor)
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(private readonly productService: ProductService) { }
 
   @Post()
-  create(@Body() product: Product) {
-    return this.productService.create(product);
+  async create(@Body() productDto: CreateProductDto) {
+    const product = new Product();
+    product.name = productDto.name;
+    product.description = productDto.description;
+    product.price = productDto.price;
+    product.stock = productDto.stock;
+    product.image = productDto.image;
+
+    try {
+      await this.productService.create(product);
+    }
+    catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    return product;
   }
 
   @Get()
@@ -28,13 +42,19 @@ export class ProductController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const product = await this.productService.findOne(+id);
+    if (!product) {
+      throw new NotFoundException(`Product with id ${id} not found`);
+    }
+    else {
+      return product;
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() product: Product) {
-    return this.productService.update(+id, product);
+  async update(@Param('id') id: string, @Body() product: Product) {
+    return await this.productService.update(+id, product);
   }
 
   @Delete(':id')

@@ -1,5 +1,6 @@
 import { define } from "typeorm-seeding";
-import { faker } from '@faker-js/faker';
+const { faker } = require('@faker-js/faker');
+
 import { Category } from "src/category/entities/category.entity";
 
 define(Category, () => {

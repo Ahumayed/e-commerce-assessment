@@ -1,0 +1,35 @@
+version: "3"
+services:
+  mysql:
+    image: mysql:latest
+    networks:
+      - mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql:/data/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=test
+
+ 
+  nestjs-api:
+    build: .
+    ports:
+      - "3000:3000"
+    restart: always
+    depends_on:
+      - mysql
+    networks:
+      - mysql
+    environment:
+    - DB_HOST=mysql
+    - DB_PORT=3306
+    - DB_USERNAME=root
+    - DB_PASSWORD=root
+    - DB_DATABASE_NAME=test
+    - DB_SYNCHRONIZE=false
+ 
+networks:
+  mysql:
+    driver: bridge
